@@ -1,0 +1,8 @@
+{
+  "name": "green-career-night",
+  "version": "1.0.0",
+  "description": "Green Career Night - Sustainability career networking event",
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.0"
+  }
+}

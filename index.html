@@ -231,11 +231,42 @@
             });
         });
 
-        // Form submission handler (placeholder)
-        document.querySelector('.register-form').addEventListener('submit', function(e) {
+        // Form submission handler
+        document.querySelector('.register-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            alert('Thank you for registering! We will contact you soon with confirmation details.');
-            this.reset();
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+
+            const formData = {
+                name: this.querySelector('#name').value,
+                email: this.querySelector('#email').value,
+                role: this.querySelector('#role').value
+            };
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(result.message);
+                    this.reset();
+                } else {
+                    alert(result.error || 'Registration failed. Please try again.');
+                }
+            } catch (error) {
+                alert('Network error. Please check your connection and try again.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         });
     </script>
 </body>
